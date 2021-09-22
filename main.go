@@ -1,18 +1,18 @@
 package main
 // 1
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"net/http"
-	"strings"
-	"time"
-	"context"
 	"os"
 	"os/signal"
+	"strings"
+	"time"
 
 	"github.com/go-chi/chi"
-	"github.com/thedevsaddam/renderer"
 	"github.com/go-chi/chi/middleware"
+	"github.com/thedevsaddam/renderer"
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -38,7 +38,7 @@ type(
 	todo struct {
 		ID string `bson:"id"`
 		Title string `bson:"title"`
-		Completed string `bson:"completed"`
+		Completed bool `bson:"completed"`
 		CreatedAt time.Time `bson:"created_at"`
 	}
 )
@@ -127,6 +127,7 @@ func fetchTodos(w http.ResponseWriter, r *http.Request)  {
 			CreatedAt: t.CreatedAt,
 		})
 	}
+
 	rnd.JSON(w, http.StatusOK, renderer.M{
 		"data": todoList,
 	})
